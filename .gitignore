@@ -4,6 +4,7 @@
 dist
 tmp
 /out-tsc
+apps/backend/config.ts
 
 # dependencies
 node_modules
