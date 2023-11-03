@@ -2,7 +2,10 @@
   "name": "@env-a/source",
   "version": "0.0.0",
   "license": "MIT",
-  "scripts": {},
+  "scripts": {
+    "start.frontend": "nx serve frontend",
+    "start.backend": "nx serve backend",
+    "start.backend.development": "nx run backend:serve:development"},
   "private": true,
   "dependencies": {
     "@angular/animations": "~16.2.0",
