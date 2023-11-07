@@ -11,7 +11,10 @@ export class UsersService {
   constructor(@InjectModel(User.name) private userModel: Model<User>) {}
 
   create(createUserDto: CreateUserDto) {
-    const userToSave = new this.userModel(createUserDto);
+    const { name } = createUserDto;
+    const userToSave = new this.userModel({
+      name: name,
+    });
     return userToSave.save();
   }
 
