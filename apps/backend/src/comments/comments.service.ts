@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { CreateCommentDto } from './dto/create-comment.dto';
 import { UpdateCommentDto } from './dto/update-comment.dto';
 import { InjectModel } from '@nestjs/mongoose';
@@ -11,15 +11,43 @@ export class CommentsService {
     @InjectModel(Comment.name) private commentModel: Model<Comment>
   ) {}
   create(createCommentDto: CreateCommentDto) {
-    return this.commentModel.create({
+    const createdComment = this.commentModel.create({
       text: createCommentDto.text,
       parent: createCommentDto.parentId || null,
       user: createCommentDto.userId,
     });
+    return createdComment.then((doc) => {
+      return doc.populate(['user', 'parent']);
+    });
   }
 
   findAll() {
-    return this.commentModel.find().populate('user').exec();
+    return this.commentModel.find().populate(['user', 'parent']).exec();
+  }
+
+  getTopLevelComments() {
+    return this.commentModel
+    .find({
+           parent: null,
+    })
+    .populate(['user', 'parent'])
+    .exec();
+  }
+
+  getCommentsByParentId(parentId: string) {
+    try {
+      return this.commentModel
+        .find({
+              parent: parentId,
+        })
+        .populate(['user', 'parent'])
+        .exec();
+  } catch(e) {
+      throw new BadRequestException('Something bad happened', {
+        cause: new Error(e.message),
+        description: 'Some error description',
+      });
+    }
   }
 
   findOne(id: number) {
