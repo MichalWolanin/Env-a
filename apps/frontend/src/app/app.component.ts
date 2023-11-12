@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
+import { RouterModule } from '@angular/router';
 
 @Component({
   standalone: true,
-  imports: [],
+  imports: [RouterModule],
   selector: 'env-a-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
