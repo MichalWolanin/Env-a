@@ -26,21 +26,21 @@
     <button>
        5 Likes
     </button>
-    <button (click)="toggleExpanded()" class="duration-200" [class.rotate-180]="isExpanded">
+    <button (click)="toggleExpanded()" class="duration-200" [class.rotate-180]="isExpanded()">
       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
         <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
       </svg>
      </button>
   </dl>
   <section class="my-4">
-    @if (isReplying) {
+    @if (isReplying()) {
     <env-a-create-comment></env-a-create-comment>
     }
   </section>
   <section class="nested-comments">
-    @if (isExpanded) {
+    @if (isExpanded()) {
       <div class="text-xl">
-        <env-a-comment></env-a-comment>
+        <env-a-comment [comment]="nestedComment" *ngFor="let nestedComment of nestedComments()"></env-a-comment>
       </div>
     }
   </section>
