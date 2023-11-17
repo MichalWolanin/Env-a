@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { CreateCommentDto } from './dto/create-comment.dto';
 import { UpdateCommentDto } from './dto/update-comment.dto';
 import { InjectModel } from '@nestjs/mongoose';
@@ -31,24 +31,19 @@ export class CommentsService {
            parent: null,
     })
     .populate(['user', 'parent'])
+    .sort({ createdAt: -1 })
     .exec();
   }
 
   getCommentsByParentId(parentId: string) {
-    try {
       return this.commentModel
         .find({
               parent: parentId,
         })
         .populate(['user', 'parent'])
+        .sort({ createdAt: -1 })
         .exec();
-  } catch(e) {
-      throw new BadRequestException('Something bad happened', {
-        cause: new Error(e.message),
-        description: 'Some error description',
-      });
-    }
-  }
+  } 
 
   findOne(id: number) {
     return `This action returns a #${id} comment`;

@@ -12,7 +12,7 @@ export class CommentService {
   getComments(parentId: string = '') {
     let url = `${environment.apiBaseUrl}/comments`;
     if (parentId) {
-      url += '?parentId=${parentId}';
+      url += `?parentId=${parentId}`;
     }
     return this.http.get<Comment[]>(url);
   }
