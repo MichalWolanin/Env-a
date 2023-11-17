@@ -1,5 +1,5 @@
 <section class="max-w-md mx-auto flex flex-col gap-4">
-  <env-a-comment></env-a-comment>
-  <env-a-comment></env-a-comment>
-  <env-a-comment></env-a-comment>
+  @for (comment of comments(); track comment._id) {
+    <env-a-comment [comment]="comment"></env-a-comment>
+  }
 </section>

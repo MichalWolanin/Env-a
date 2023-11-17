@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CreateCommentComponent } from "../create-comment/create-comment.component";
+import { Comment } from '../../interfaces/comment.interface';
 
 @Component({
     selector: 'env-a-comment',
@@ -10,6 +11,7 @@ import { CreateCommentComponent } from "../create-comment/create-comment.compone
     imports: [CommonModule, CreateCommentComponent]
 })
 export class CommentComponent {
+  @Input() comment!: Comment;
   isExpanded = false;
   isReplying = false;
 
