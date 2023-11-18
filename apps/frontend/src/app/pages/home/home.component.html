@@ -1,3 +1,7 @@
+<section class="max-w-md mx-auto flex flex-col gap-4 mb-4">
+  <env-a-create-comment (formSubmitted)="createComment($event)"></env-a-create-comment>
+</section>
+
 <section class="max-w-md mx-auto flex flex-col gap-4">
   @for (comment of comments(); track comment._id) {
     <env-a-comment [comment]="comment"></env-a-comment>

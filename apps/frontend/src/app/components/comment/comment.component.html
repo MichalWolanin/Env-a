@@ -34,13 +34,15 @@
   </dl>
   <section class="my-4">
     @if (isReplying()) {
-    <env-a-create-comment></env-a-create-comment>
+    <env-a-create-comment placeholder="Write your reply" buttonText="Send"></env-a-create-comment>
     }
   </section>
   <section class="nested-comments">
     @if (isExpanded()) {
       <div class="text-xl">
-        <env-a-comment [comment]="nestedComment" *ngFor="let nestedComment of nestedComments()"></env-a-comment>
+        @for (nestedComment of nestedComments(); track comment._id) {
+          <env-a-comment [comment]="nestedComment"></env-a-comment>
+        }
       </div>
     }
   </section>

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -8,4 +8,23 @@ import { CommonModule } from '@angular/common';
   templateUrl: './create-comment.component.html',
   styleUrls: ['./create-comment.component.scss'],
 })
-export class CreateCommentComponent {}
+export class CreateCommentComponent {
+  @Input() placeholder = 'Write something...';
+  @Input() buttonText = 'Create';
+  @Output() formSubmitted = new EventEmitter<{
+    text: string;
+  }>();
+
+  formSubmit(event: SubmitEvent) {
+    event.preventDefault();
+    const form = event.target as HTMLFormElement;
+    const textAreaElement = form.elements.namedItem(
+      'commentText'
+    ) as HTMLTextAreaElement;
+    const commentText = textAreaElement.value;
+    form.reset();
+    this.formSubmitted.emit({
+      text: commentText,
+    });
+  }
+}
