@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { CreateCommentComponent } from "../create-comment/create-comment.component";
 import { Comment } from '../../interfaces/comment.interface';
 import { CommentService } from '../../services/comment.service';
+import { UserService } from '../../services/user.service';
 
 @Component({
     selector: 'env-a-comment',
@@ -15,6 +16,7 @@ export class CommentComponent {
   @Input() comment!: Comment;
   isExpanded = signal(false);
   isReplying = signal(false);
+  userService = inject(UserService);
   commentService = inject(CommentService);
   nestedComments = signal<Comment[]>([]);
 
@@ -37,4 +39,19 @@ export class CommentComponent {
   toggleExpanded() {
     this.isExpanded.set(!this.isExpanded());
   }
+
+  createComment(formValues: {text: string}) {
+    const {text} = formValues;
+    const user = this.userService.getUserFromStorage();
+    if (!user) {
+        return;
+    }
+    this.commentService.createComment({
+        text,
+        userId: user._id,
+    })
+    .subscribe((createdComment) => {
+        this.nestedComments.set([createdComment, ...this.nestedComments()]);
+    });
+}
 }

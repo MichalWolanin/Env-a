@@ -34,7 +34,7 @@
   </dl>
   <section class="my-4">
     @if (isReplying()) {
-    <env-a-create-comment placeholder="Write your reply" buttonText="Send"></env-a-create-comment>
+    <env-a-create-comment (formSubmitted)="createComment($event)" placeholder="Write your reply" buttonText="Send"></env-a-create-comment>
     }
   </section>
   <section class="nested-comments">
