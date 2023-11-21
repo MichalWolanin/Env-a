@@ -40,7 +40,7 @@
   <section class="nested-comments">
     @if (isExpanded()) {
       <div class="text-xl">
-        @for (nestedComment of nestedComments(); track comment._id) {
+        @for (nestedComment of nestedComments(); track commentTrackBy) {
           <env-a-comment [comment]="nestedComment"></env-a-comment>
         }
       </div>

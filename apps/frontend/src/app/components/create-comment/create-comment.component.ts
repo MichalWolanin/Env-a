@@ -15,7 +15,7 @@ export class CreateCommentComponent {
     text: string;
   }>();
 
-  formSubmit(event: SubmitEvent) {
+  formSubmit(event: SubmitEvent): void {
     event.preventDefault();
     const form = event.target as HTMLFormElement;
     const textAreaElement = form.elements.namedItem(

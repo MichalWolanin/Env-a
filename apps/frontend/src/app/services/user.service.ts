@@ -17,11 +17,11 @@ export class UserService {
     });
   }
 
-  saveUserToStorage(user: User) {
+  saveUserToStorage(user: User): void {
     localStorage.setItem(this.localStorageKey, JSON.stringify(user));
   }
 
-  getUserFromStorage() {
+  getUserFromStorage(): User | null {
     const user = localStorage.getItem(this.localStorageKey);
     return user ? JSON.parse(user) as User : null;
   }

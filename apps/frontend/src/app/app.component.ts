@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject } from '@angular/core';
+import { Component, DestroyRef, inject } from '@angular/core';
 import { RouterModule } from '@angular/router';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { UserService } from './services/user.service';
 
 @Component({
@@ -13,6 +14,8 @@ import { UserService } from './services/user.service';
 export class AppComponent {
   title = 'Env-a';
   userService = inject(UserService);
+  private destroyRef = inject(DestroyRef);
+
   constructor() {
     const user = this.userService.getUserFromStorage();
     
@@ -20,8 +23,8 @@ export class AppComponent {
       const randomNumber = Math.ceil(Math.random() * 4000 + 1000);
       const randomName = `user_${randomNumber}`
       this.userService.createUser(randomName)
+        .pipe(takeUntilDestroyed(this.destroyRef))
         .subscribe(user => {
-          console.log('user created', user);
           this.userService.saveUserToStorage(user);
         });
     }; 
