@@ -1,6 +1,7 @@
+import { AuthService } from './services/auth.service';
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
-import { AppService } from './app.service';
+import { AppService } from './services/app.service';
 import { UsersModule } from "./users/users.module";
 import { CommentsModule } from './comments/comments.module';
 import { MongooseModule } from "@nestjs/mongoose";
@@ -13,6 +14,7 @@ import config from "../config";
     MongooseModule.forRoot(config.mongodbUri),
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [
+    AuthService, AppService],
 })
-export class AppModule {}
+export class AppModule { }
