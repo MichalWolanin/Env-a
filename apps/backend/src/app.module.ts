@@ -1,4 +1,3 @@
-import { AuthService } from './services/auth.service';
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './services/app.service';
@@ -13,8 +12,9 @@ import config from "../config";
     CommentsModule,
     MongooseModule.forRoot(config.mongodbUri),
   ],
-  controllers: [AppController],
+  controllers: [
+    AppController],
   providers: [
-    AuthService, AppService],
+    AppService],
 })
 export class AppModule { }
