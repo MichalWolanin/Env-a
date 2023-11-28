@@ -5,6 +5,7 @@ dist
 tmp
 /out-tsc
 config.ts
+firebaseServiceAccount.json
 # dependencies
 node_modules
 
