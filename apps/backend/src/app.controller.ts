@@ -15,7 +15,6 @@ export class AppController {
   @UseGuards(AuthGuard('jwt'))
   @Get('/hello')
   getHello(@Req() request: Request): string {
-    console.log('User', JSON.stringify(request['user']));
     return 'Hello ' + JSON.stringify(request['user']) + '!';
   }
 }
