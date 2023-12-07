@@ -1,15 +1,14 @@
 import { CACHE_MANAGER } from '@nestjs/cache-manager';
-import { Inject, Injectable } from '@nestjs/common';
+import { Inject, Injectable, UnauthorizedException } from '@nestjs/common';
 import { Request, Response } from 'express';
 import { Cache } from 'cache-manager';
-import { v4 as uuidv4 } from 'uuid';
+import { v4 as uuidv4, validate as uuidValidate } from 'uuid';
 
 @Injectable()
 export class AuthService {
     constructor(@Inject(CACHE_MANAGER) private cacheManager: Cache) {}
     
-    async googleLogin(req: Request, res: Response) {
-        console.log(req.user);
+    async googleRedirect(req: Request, res: Response) {
         const userTempId = uuidv4();
         await this.cacheManager.set(
             `temp-google-user__${userTempId}`,
@@ -17,20 +16,26 @@ export class AuthService {
             10000,
         );
 
-        setTimeout(async () => {
-            const googleUser = await this.cacheManager.get(
-                `temp-google-user__${userTempId}`,
-            );
-            console.log(`user after 9s: ${JSON.stringify(googleUser)}`);
-        }, 9000);
+        res.redirect(`http://localhost:4200/#/auth/login?id=${userTempId}`);
+    }
 
-        setTimeout(async () => {
-            const googleUser = await this.cacheManager.get(
-                `temp-google-user__${JSON.stringify(userTempId)}`,
-            );
-            console.log(`user after 11s: ${googleUser}`);
-        }, 11000);
+    async googleLogin(req: Request) {
+        const authorization = req.get('authorization');
+        if (!authorization) throw new UnauthorizedException();
 
-        return null;
+        const userTempId = authorization.replace('Bearer ', '');
+        if (!uuidValidate(userTempId)) throw new UnauthorizedException();
+
+        const googleUser = await this.cacheManager.get(
+            `temp-google-user__${userTempId}`,
+            );
+
+            await this.handleDatabaseUser();
+
+            return googleUser;
+    }
+
+    handleDatabaseUser() {
+        throw new Error('Method not implemented.');
     }
 }
