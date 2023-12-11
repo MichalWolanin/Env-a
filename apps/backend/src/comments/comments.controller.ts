@@ -1,13 +1,15 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Query, UseGuards } from '@nestjs/common';
 import { CommentsService } from '../services/comments.service';
 import { CreateCommentDto } from './dto/create-comment.dto';
 import { UpdateCommentDto } from './dto/update-comment.dto';
+import { AuthGuard } from '@nestjs/passport';
 
 @Controller('comments')
 export class CommentsController {
-  constructor(private readonly commentsService: CommentsService) {}
+  constructor(private readonly commentsService: CommentsService) { }
 
   @Post()
+  @UseGuards(AuthGuard('google'))
   create(@Body() createCommentDto: CreateCommentDto) {
     return this.commentsService.create(createCommentDto);
   }
@@ -16,7 +18,7 @@ export class CommentsController {
   findAll(@Query() queryParams) {
     if (queryParams.parentId) {
       return this.commentsService.getCommentsByParentId(queryParams.parentId);
-    } 
+    }
     return this.commentsService.getTopLevelComments();
   }
 
