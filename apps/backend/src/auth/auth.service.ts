@@ -4,10 +4,14 @@ import { Request, Response } from 'express';
 import { Cache } from 'cache-manager';
 import { v4 as uuidv4, validate as uuidValidate } from 'uuid';
 
+interface IUser {
+    accessToken: string;
+}
+
 @Injectable()
 export class AuthService {
-    constructor(@Inject(CACHE_MANAGER) private cacheManager: Cache) {}
-    
+    constructor(@Inject(CACHE_MANAGER) private cacheManager: Cache) { }
+
     async googleRedirect(req: Request, res: Response) {
         const userTempId = uuidv4();
         await this.cacheManager.set(
@@ -15,8 +19,9 @@ export class AuthService {
             req.user,
             10000,
         );
+        const user = req.user as IUser;
 
-        res.redirect(`http://localhost:4200/#/auth/login?id=${userTempId}`);
+        res.redirect(`http://localhost:4200/#/auth/login?id=${user.accessToken}`);
     }
 
     async googleLogin(req: Request) {
@@ -28,11 +33,11 @@ export class AuthService {
 
         const googleUser = await this.cacheManager.get(
             `temp-google-user__${userTempId}`,
-            );
+        );
 
-            await this.handleDatabaseUser();
+        await this.handleDatabaseUser();
 
-            return googleUser;
+        return googleUser;
     }
 
     handleDatabaseUser() {

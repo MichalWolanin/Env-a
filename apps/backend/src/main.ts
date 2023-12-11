@@ -7,7 +7,11 @@ import { ValidationErrorFilter } from './mongo-validation.filter';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.useGlobalPipes(new ValidationPipe());
-  app.enableCors();
+  app.enableCors({
+    allowedHeaders: '*',
+    origin: '*',
+    credentials: true,
+  });
   app.useGlobalFilters(new ValidationErrorFilter());
   await app.listen(3000);
 }
