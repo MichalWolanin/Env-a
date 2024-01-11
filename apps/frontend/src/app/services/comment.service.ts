@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { Comment } from '../interfaces/comment.interface';
-import { environment } from '../environment';
+import { environment } from '../../environment';
 import { Observable } from 'rxjs';
 
 type CreateCommentDto = {

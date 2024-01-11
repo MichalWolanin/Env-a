@@ -6,6 +6,7 @@ tmp
 /out-tsc
 config.ts
 .env
+environment.ts
 # dependencies
 node_modules
 

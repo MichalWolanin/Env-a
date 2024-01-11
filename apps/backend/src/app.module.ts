@@ -1,35 +1,21 @@
-import { AuthModule } from './auth/auth.module';
-import { AuthUtilsModule } from './auth-utils/auth-utils.module';
 import { Module } from '@nestjs/common';
-import { CacheModule } from '@nestjs/cache-manager';
 import { AppController } from './app.controller';
-import { AppService } from './services/app.service';
+import { AppService } from './app.service';
 import { UsersModule } from "./users/users.module";
 import { CommentsModule } from './comments/comments.module';
 import { MongooseModule } from "@nestjs/mongoose";
-import config from "../config";
+import config from './config';
+import { CustomStrategy } from './auth/auth.strategy';
 import { PassportModule } from '@nestjs/passport';
 
 @Module({
   imports: [
-    AuthModule,
-    AuthUtilsModule,
-    UsersModule, 
+    UsersModule,
     CommentsModule,
-    PassportModule,
-    CacheModule.register({
-      ttl: 10,
-      max: 100000,
-      isGlobal: true,
-    }),
     MongooseModule.forRoot(config.mongodbUri),
+    PassportModule.register({ defaultStrategy: 'custom' }),
   ],
-  controllers: [
-    AppController],
-  providers: [ 
-    AppService,
-  ],
+  controllers: [AppController],
+  providers: [AppService, CustomStrategy],
 })
-export class AppModule {
-}
-
+export class AppModule {}
